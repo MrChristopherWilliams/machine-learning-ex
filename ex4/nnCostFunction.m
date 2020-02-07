@@ -76,7 +76,40 @@ J = J + regul;
 %         Hint: We recommend implementing backpropagation using a for-loop
 %               over the training examples if you are implementing it for the 
 %               first time.
-%
+
+
+for t=1:m
+
+    % Step 1
+	a1 = X(t,:);
+    a1 = a1';
+	z2 = Theta1 * a1;
+	a2 = sigmoid(z2);
+    
+    a2 = [1 ; a2];
+	z3 = Theta2 * a2;
+	a3 = sigmoid(z3);
+    
+    % Step 2
+	d3 = a3 - yr(:,t);
+    z2= [1; z2];
+    
+    % Step 3
+    d2 = (Theta2' * d3) .* sigmoidGradient(z2);
+
+    % Step 4
+	d2 = d2(2:end);
+
+	Theta2_grad = Theta2_grad + d3 * a2';
+	Theta1_grad = Theta1_grad + d2 * a1';
+    
+end
+
+% Step 5
+Theta2_grad = Theta2_grad / m;
+Theta1_grad = Theta1_grad / m;
+
+
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
@@ -86,19 +119,8 @@ J = J + regul;
 %
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + ((lambda/m)*(Theta1(:, 2:end)));
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + ((lambda/m)*(Theta2(:, 2:end)));
 
 
 
