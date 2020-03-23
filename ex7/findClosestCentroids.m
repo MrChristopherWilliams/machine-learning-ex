@@ -22,8 +22,17 @@ idx = zeros(size(X,1), 1);
 %
 
 
-
-
+for i = 1:length(X)
+    minimumDistance = Inf;
+    
+    for j = 1:K
+        distance = norm(X(i,:) - centroids(j,:)) ^ 2;
+        if distance < minimumDistance
+            minimumDistance = distance;
+            idx(i) = j;
+        end
+    end
+end
 
 
 
